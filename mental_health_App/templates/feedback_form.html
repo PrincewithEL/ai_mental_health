@@ -1,0 +1,23 @@
+<!-- feedback_form.html -->
+<form method="post" id="feedback-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Feedback</button>
+</form>
+
+<div id="feedback-response"></div>
+
+<script>
+document.getElementById('feedback-form').onsubmit = function(event) {
+    event.preventDefault(); // Prevent the default form submission
+    const formData = new FormData(this);
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('feedback-response').innerText = data.message;
+    });
+};
+</script>

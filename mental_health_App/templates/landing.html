@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindfulAI Support | Student Mental Health Platform</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<style>
+:root {
+    --primary-green: #2ecc71;
+    --dark-green: #27ae60;
+    --light-green: #f0f7f1;
+    --hover-green: #219a52;
+    --text-dark: #2c3e2f;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--light-green);
+}
+
+/* Header & Navigation */
+header {
+    background-color: var(--white);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(46, 204, 113, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--dark-green);
+}
+
+.logo i {
+    font-size: 1.5rem;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.login-btn {
+    background-color: var(--primary-green);
+    color: var(--white);
+    padding: 0.7rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: var(--hover-green);
+    transform: translateY(-2px);
+}
+
+/* Main Content */
+main {
+    margin-top: 5rem;
+    padding: 2rem;
+}
+
+.hero-section {
+    max-width: 1200px;
+    margin: 2rem auto;
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.hero-section h2 {
+    font-size: 2.5rem;
+    color: var(--dark-green);
+    margin-bottom: 1rem;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.feature-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(46, 204, 113, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card i {
+    font-size: 2rem;
+    color: var(--primary-green);
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    color: var(--dark-green);
+    margin-bottom: 1rem;
+}
+
+/* How It Works Section */
+.how-it-works {
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 2rem 1rem;
+}
+
+.steps-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.step-card {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.step-number {
+    background-color: var(--primary-green);
+    color: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-green);
+    color: var(--white);
+    padding: 2rem;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: var(--white);
+    text-decoration: none;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section h2 {
+        font-size: 2rem;
+    }
+    
+    .hero-section p {
+        font-size: 1rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>MindfulAI Support</h1>
+            </a>
+            <a href="{% url 'login' %}" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <h2>Your AI-Powered Mental Health Companion</h2>
+            <p>Supporting student well-being through innovative AI technology, personalized guidance, and compassionate care.</p>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-robot" style="color: red;"></i>
+                <h3>24/7 AI Support</h3>
+                <p>Access immediate emotional support and guidance through our advanced AI chatbot, trained to understand and respond to your unique needs.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-user-shield" style="color: blue;"></i>
+                <h3>Private & Secure</h3>
+                <p>Your mental health journey is personal. We ensure complete privacy and confidentiality in all interactions.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line" style="color: green;"></i>
+                <h3>Personalized Growth</h3>
+                <p>Receive tailored recommendations and track your progress with personalized insights and development plans.</p>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <h2>How It Works</h2>
+            <div class="steps-container">
+                <a href="{% url 'login' %}" style="color: black; text-decoration: none;">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up</h3>
+                    <p>The student administration creates a secure account for you to begin your journey to better mental health.</p>
+                    <br>
+                    <img src="{% static 'sign-up.gif' %}" style="width: 120px;" alt="">
+                </div>
+            </a>
+            <a href="{% url 'login' %}" style="color: black; text-decoration: none;">
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Connect</h3>
+                    <p>Start a conversation with our AI assistant anytime, anywhere.</p>
+                    <br>
+                    <img src="{% static 'neural-net.gif' %}" style="width: 120px;" alt="">
+                </div>
+            </a>
+            <a href="{% url 'login' %}" style="color: black; text-decoration: none;">
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Grow</h3>
+                    <p>Follow personalized recommendations and track your progress.</p>
+                    <br>
+                    <img src="{% static 'organic.gif' %}" style="width: 120px;" alt="">
+                </div>
+            </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Mental Health Articles</a></li>
+                    <li><a href="#">Student Support</a></li>
+                    <li><a href="#">Crisis Help</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 MindfulAI Support. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
