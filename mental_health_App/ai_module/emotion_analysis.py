@@ -5,14 +5,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 from typing import Tuple, Dict
 import logging
 import nltk
-from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import re
 import os
 from django.conf import settings
 from textblob import TextBlob
-from django.contrib.staticfiles import finders
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -20,39 +18,24 @@ logger = logging.getLogger(__name__)
 
 # Define the NLTK data path
 NLTK_DATA_PATH = os.path.join(settings.BASE_DIR, 'nltk_data')
-os.makedirs(NLTK_DATA_PATH, exist_ok=True)  # Ensure directory exists
+os.makedirs(NLTK_DATA_PATH, exist_ok=True)
 nltk.data.path.append(NLTK_DATA_PATH)
 
 def ensure_nltk_downloads():
     """Ensure all required NLTK data is downloaded."""
     required_nltk_data = {
-        'tokenizers/punkt': 'punkt',
-        'corpora/stopwords': 'stopwords',
-        'corpora/wordnet': 'wordnet',
-        'taggers/averaged_perceptron_tagger': 'averaged_perceptron_tagger'
+        'stopwords': 'corpora/stopwords',
+        'wordnet': 'corpora/wordnet',
+        'averaged_perceptron_tagger': 'taggers/averaged_perceptron_tagger'
     }
     
-    for resource_path, resource_name in required_nltk_data.items():
+    for resource_name, resource_path in required_nltk_data.items():
         try:
-            # First try to find the resource
-            nltk.data.find(resource_path)
-            logger.info(f"Found NLTK resource: {resource_name}")
-        except LookupError:
-            try:
-                # If not found, download it
-                logger.info(f"Downloading NLTK resource: {resource_name}")
-                nltk.download(resource_name, download_dir=NLTK_DATA_PATH, quiet=True)
-                logger.info(f"Successfully downloaded {resource_name}")
-            except Exception as e:
-                logger.error(f"Error downloading {resource_name}: {str(e)}")
-                raise RuntimeError(f"Failed to download required NLTK resource: {resource_name}")
-
-# Initialize NLTK resources safely
-try:
-    ensure_nltk_downloads()
-except Exception as e:
-    logger.error(f"Failed to initialize NLTK resources: {str(e)}")
-    raise
+            nltk.download(resource_name, download_dir=NLTK_DATA_PATH, quiet=True)
+            logger.info(f"Successfully downloaded {resource_name}")
+        except Exception as e:
+            logger.error(f"Error downloading {resource_name}: {str(e)}")
+            raise RuntimeError(f"Failed to download required NLTK resource: {resource_name}")
 
 class TextPreprocessor:
     def __init__(self):
@@ -62,18 +45,32 @@ class TextPreprocessor:
         except Exception as e:
             logger.error(f"Error initializing TextPreprocessor: {str(e)}")
             raise
+
+    def simple_tokenize(self, text: str) -> list:
+        """Simple tokenization fallback method."""
+        # Split on whitespace and punctuation
+        return re.findall(r'\b\w+\b', text.lower())
         
     def preprocess(self, text: str) -> str:
         """Clean and lemmatize the input text for better semantic matching."""
         try:
+            # Convert to lowercase and remove special characters
             text = text.lower()
             text = re.sub(r'[^a-zA-Z\s]', '', text)
-            tokens = word_tokenize(text)
-            tokens = [self.lemmatizer.lemmatize(token) for token in tokens if token not in self.stop_words]
+            
+            # Use simple tokenization instead of NLTK's word_tokenize
+            tokens = self.simple_tokenize(text)
+            
+            # Remove stopwords and lemmatize
+            tokens = [self.lemmatizer.lemmatize(token) 
+                     for token in tokens 
+                     if token not in self.stop_words]
+            
             return ' '.join(tokens)
         except Exception as e:
             logger.error(f"Error in text preprocessing: {str(e)}")
-            raise
+            # Return cleaned text as fallback
+            return re.sub(r'[^a-zA-Z\s]', '', text.lower())
 
 def load_response_data() -> Tuple[pd.DataFrame, TfidfVectorizer, np.ndarray]:
     """Load and preprocess the response data, fitting a TF-IDF vectorizer."""
@@ -95,7 +92,8 @@ def load_response_data() -> Tuple[pd.DataFrame, TfidfVectorizer, np.ndarray]:
             max_features=2000,
             ngram_range=(1, 2),
             min_df=1,
-            max_df=0.85
+            max_df=0.85,
+            token_pattern=r'\b\w+\b'  # Simplified token pattern
         )
         context_vectors = vectorizer.fit_transform(data['processed_context'])
 
@@ -125,3 +123,9 @@ def get_best_response(user_input: str) -> str:
     except Exception as e:
         logger.error(f"Error finding best response: {str(e)}")
         return "I'm sorry, I encountered an error while processing your request."
+
+# Initialize NLTK resources
+try:
+    ensure_nltk_downloads()
+except Exception as e:
+    logger.error(f"Failed to initialize NLTK resources: {str(e)}")
