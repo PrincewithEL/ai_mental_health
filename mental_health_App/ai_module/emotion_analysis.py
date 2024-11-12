@@ -47,7 +47,7 @@ def load_response_data() -> Tuple[pd.DataFrame, TfidfVectorizer, np.ndarray]:
     global response_data, vectorizer, context_vectors
     
     # Define the path to the dataset
-    path = os.path.join(settings.BASE_DIR, 'Dataset.csv')
+    path = os.path.join(settings.BASE_DIR, 'media', 'Dataset.csv')
     
     # Load data
     if not os.path.exists(path):
