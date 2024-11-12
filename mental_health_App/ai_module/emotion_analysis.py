@@ -11,6 +11,8 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import re
+import os
+from django.conf import settings
 from textblob import TextBlob
 from django.contrib.staticfiles import finders
 
@@ -44,10 +46,12 @@ def load_response_data() -> Tuple[pd.DataFrame, TfidfVectorizer, np.ndarray]:
     """Load and preprocess the response data, fitting a TF-IDF vectorizer."""
     global response_data, vectorizer, context_vectors
     
+    # Define the path to the dataset
+    path = os.path.join(settings.BASE_DIR, 'Dataset.csv')
+    
     # Load data
-    path = finders.find('Dataset.csv')
-    if path is None:
-        raise FileNotFoundError("Dataset.csv not found in static files.")
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Dataset.csv not found at {path}")
     
     data = pd.read_csv(path)
     data = data[['Context', 'Response']].dropna().drop_duplicates()
