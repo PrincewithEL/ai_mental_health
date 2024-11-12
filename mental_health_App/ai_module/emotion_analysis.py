@@ -22,8 +22,9 @@ def ensure_nltk_downloads():
     required_nltk_data = ['punkt', 'stopwords', 'wordnet', 'averaged_perceptron_tagger']
     for item in required_nltk_data:
         try:
-            nltk.data.find(f'tokenizers/{item}')
+            nltk.data.find(f'corpora/{item}')
         except LookupError:
+            logging.info(f"Downloading NLTK resource: {item}")
             nltk.download(item, download_dir=os.path.join(settings.BASE_DIR, 'nltk_data'))
     logging.info("NLTK data check completed successfully")
 
