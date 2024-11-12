@@ -16,6 +16,10 @@ from django.conf import settings
 from textblob import TextBlob
 from django.contrib.staticfiles import finders
 
+# Define the NLTK data path
+NLTK_DATA_PATH = os.path.join(settings.BASE_DIR, 'nltk_data')
+nltk.data.path.append(NLTK_DATA_PATH)
+
 # Ensure NLTK data is downloaded
 def ensure_nltk_downloads():
     """Ensure all required NLTK data is downloaded."""
@@ -25,7 +29,7 @@ def ensure_nltk_downloads():
             nltk.data.find(f'corpora/{item}')
         except LookupError:
             logging.info(f"Downloading NLTK resource: {item}")
-            nltk.download(item, download_dir=os.path.join(settings.BASE_DIR, 'nltk_data'))
+            nltk.download(item, download_dir=NLTK_DATA_PATH)
     logging.info("NLTK data check completed successfully")
 
 # Call this function at module import to ensure required NLTK resources are downloaded
