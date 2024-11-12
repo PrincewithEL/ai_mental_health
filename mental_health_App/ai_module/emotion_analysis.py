@@ -16,6 +16,7 @@ from django.conf import settings
 from textblob import TextBlob
 from django.contrib.staticfiles import finders
 
+# Ensure NLTK data is downloaded
 def ensure_nltk_downloads():
     """Ensure all required NLTK data is downloaded."""
     required_nltk_data = ['punkt', 'stopwords', 'wordnet', 'averaged_perceptron_tagger']
@@ -23,10 +24,10 @@ def ensure_nltk_downloads():
         try:
             nltk.data.find(f'tokenizers/{item}')
         except LookupError:
-            nltk.download(item, quiet=True)
+            nltk.download(item, download_dir=os.path.join(settings.BASE_DIR, 'nltk_data'))
     logging.info("NLTK data check completed successfully")
 
-# Call this function at module import
+# Call this function at module import to ensure required NLTK resources are downloaded
 ensure_nltk_downloads()
 
 class TextPreprocessor:
@@ -96,9 +97,3 @@ def get_best_response(user_input: str) -> str:
     except Exception as e:
         logging.error(f"Error finding best response: {str(e)}")
         return "I'm sorry, I encountered an error while processing your request."
-
-# Example usage of the get_best_response function
-if __name__ == "__main__":
-    user_input = "I'm feeling very down and unmotivated lately."
-    response = get_best_response(user_input)
-    print(response)
