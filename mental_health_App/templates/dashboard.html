@@ -50,58 +50,294 @@ nav a:hover {
     background-color: #fde9e7;
 }
 
-/* Main content */
-main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
+    :root {
+        --primary-green: #2E7D32;
+        --light-green: #81C784;
+        --pale-green: #C8E6C9;
+        --sidebar-width: 0px;
+    }
 
-section {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(34, 139, 34, 0.1);
-    margin-bottom: 2rem;
-}
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+    }
 
-section h2 {
-    color: #1a5928;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+    }
 
-/* Chat interface */
-#userMessage {
-    width: 100%;
-    padding: 0.8rem;
-    margin: 1rem 0;
-    border: 1px solid #a8dab5;
-    border-radius: 4px;
-    font-size: 1rem;
-}
+    /* Sidebar Styles */
+    .sidebar {
+        width: var(--sidebar-width);
+        background: var(--primary-green);
+        padding: 2rem 0;
+        position: fixed;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        animation: slideInLeft 0.6s ease-out;
+    }
 
-#userMessage:focus {
-    outline: none;
-    border-color: #2ecc71;
-    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
-}
+    .nav-logo {
+        text-align: center;
+        color: white;
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+    }
 
-#sendMessage {
-    background-color: #2ecc71;
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-}
+    .nav-logo h1 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
 
-#sendMessage:hover {
-    background-color: #27ae60;
-}
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
 
+    .nav-button {
+        background: transparent;
+        border: 2px solid var(--pale-green);
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nav-button:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .nav-button:hover:before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .nav-button.active {
+        background: var(--light-green);
+        transform: scale(1.05);
+    }
+
+    /* Main Content Styles */
+    main {
+        margin-left: var(--sidebar-width);
+        padding: 2rem;
+        flex-grow: 1;
+    }
+
+    section {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        animation: fadeIn 0.8s ease-out;
+        margin-bottom: 2rem;
+        display: none;
+    }
+
+    section.active {
+        display: block;
+        animation: fadeInScale 0.5s ease-out;
+    }
+
+    h2 {
+        color: var(--primary-green);
+        border-bottom: 3px solid var(--light-green);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        animation: slideIn 0.6s ease-out;
+    }
+
+    p {
+        margin: 15px 0;
+        padding: 10px;
+        background: var(--pale-green);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    p:hover {
+        transform: translateX(10px);
+        background: var(--light-green);
+    }
+
+    img {
+        border-radius: 50%;
+        border: 4px solid var(--light-green);
+        object-fit: cover;
+        transition: all 0.3s ease;
+        animation: pulse 2s infinite;
+    }
+
+    img:hover {
+        border-color: var(--primary-green);
+        transform: scale(1.05);
+    }
+
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 2px solid var(--light-green);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus, textarea:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+    }
+
+    button {
+        background: var(--primary-green);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        animation: bounceIn 0.8s ease;
+    }
+
+    button:hover {
+        background: var(--light-green);
+        transform: scale(1.05);
+    }
+
+    #response {
+        margin-top: 20px;
+        min-height: 100px;
+        padding: 15px;
+        background: var(--pale-green);
+        border-radius: 8px;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Animations */
+    @keyframes slideInLeft {
+        from {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(129, 199, 132, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(129, 199, 132, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(129, 199, 132, 0);
+        }
+    }
+
+    @keyframes bounceIn {
+        0% {
+            transform: scale(0.3);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        70% {
+            transform: scale(0.9);
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+        
+        .nav-links {
+            flex-direction: row;
+            justify-content: center;
+        }
+        
+        main {
+            margin-left: 0;
+        }
+    }
+
+    /* Added responsive design */
+    @media (max-width: 768px) {
+        main {
+            grid-template-columns: 1fr;
+        }
+    }
 /* Response area */
 #response {
     margin-top: 1.5rem;
@@ -193,39 +429,108 @@ section h2 {
         padding: 1.5rem;
     }
 }
+
+/* Basic Styling for Popup */
+.popup {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 128, 0, 0.7); /* Green tinted background */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.popup-content {
+  background-color: #e8f5e9; /* Light green background */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popup-title {
+  color: #388e3c; /* Dark green color */
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-family: 'Arial', sans-serif;
+}
+
+.popup-message {
+  font-size: 18px;
+  color: #2e7d32; /* Medium green */
+  margin-bottom: 20px;
+}
+
+.popup-btn {
+  background-color: #43a047; /* Lively green */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.popup-btn:hover {
+  background-color: #388e3c; /* Darker green on hover */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
 </style>
 <body>
     <header>
         <h1>Welcome, {{ request.user.username }}</h1>
         <nav>
+                <a style="color: green;" onmouseenter="this.style.backgroundColor='#90ee90'" onmouseleave="this.style.backgroundColor='white'" onclick="showSection('profile')">Profile</a>
+                <a style="color: green;" onmouseenter="this.style.backgroundColor='#90ee90'" onmouseleave="this.style.backgroundColor='white'" onclick="showSection('chatbot')">Chatbot</a>
             <a href="{% url 'logout' %}">Logout</a>
         </nav>
     </header>
-    <main>
-        <section>
-            <h2>Your Profile</h2>
-            <p><b>Fullname: {{ request.user.first_name }} {{ request.user.last_name }}</b></p>
-            <br>
+      <div id="popup" class="popup">
+    <div class="popup-content">
+      <h2 class="popup-title">💬 Hey there, Student!</h2>
+      <p class="popup-message">Thank you logging in. Check in on your mental health today! Your well-being matters 😊.</p>
+      <button id="close-popup" class="popup-btn">Got it!</button>
+    </div>
+  </div>
+ <main>
+            <section id="profile" class="active">
+                <h2>Your Profile</h2>
+                <p><b>Fullname: {{ request.user.first_name }} {{ request.user.last_name }}</b></p>
                 <p><b>Course: {{ request.user.student_profile.course }}</b></p>
-            <br>
-                        <p><b>Year: {{ request.user.student_profile.year_of_study }}</b></p>
-            <br>
-    <img src="{{ MEDIA_URL }}{{ request.user.student_profile.profile_picture }}" alt="{{ request.user.username }}'s profile picture" style="width:150px; height:150px;">
+                <p><b>Year: {{ request.user.student_profile.year_of_study }}</b></p>
+                <img src="{{ MEDIA_URL }}{{ request.user.student_profile.profile_picture }}" alt="{{ request.user.username }}'s profile picture" style="width:150px; height:150px;">
+            </section>
 
-        </section>
-
-        <section>
-            <h2>Chatbot Interaction</h2>
-            <input type="text" id="userMessage" placeholder="Type your message...">
-            <button id="sendMessage">Send</button>
-            <div id="response"></div>
-            <form id="feedbackForm">
-                 {% csrf_token %}
-                <textarea name="message" placeholder="Provide your feedback..."></textarea>
-                <button type="submit">Submit Feedback</button>
-            </form>
-        </section>
-    </main>
+            <section id="chatbot">
+                <h2>Chatbot Interaction</h2>
+                <input type="text" id="userMessage" placeholder="Type your message...">
+                <button id="sendMessage">Send</button>
+                <div id="response"></div>
+                <form id="feedbackForm">
+                    {% csrf_token %}
+                    <textarea name="message" placeholder="Provide your feedback..."></textarea>
+                    <button type="submit">Submit Feedback</button>
+                </form>
+            </section>
+        </main>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
@@ -290,5 +595,44 @@ document.getElementById('userMessage').addEventListener('keypress', function(e) 
     }
 });
 </script>
+<script type="text/javascript">
+    // Function to show the popup
+function showPopup() {
+  const popup = document.getElementById('popup');
+  popup.style.display = 'flex';
+}
+
+// Function to close the popup
+function closePopup() {
+  const popup = document.getElementById('popup');
+  popup.style.display = 'none';
+}
+
+// Show the popup when the page loads
+window.onload = function() {
+  setTimeout(showPopup, 1000); // Popup appears after 1 second
+}
+
+// Close popup when button is clicked
+document.getElementById('close-popup').addEventListener('click', closePopup);
+
+</script>
+   <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update nav buttons
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>

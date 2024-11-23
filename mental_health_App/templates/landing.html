@@ -224,6 +224,70 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* Basic Styling for Popup */
+.popup {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 128, 0, 0.7); /* Green tinted background */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.popup-content {
+  background-color: #e8f5e9; /* Light green background */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popup-title {
+  color: #388e3c; /* Dark green color */
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-family: 'Arial', sans-serif;
+}
+
+.popup-message {
+  font-size: 18px;
+  color: #2e7d32; /* Medium green */
+  margin-bottom: 20px;
+}
+
+.popup-btn {
+  background-color: #43a047; /* Lively green */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.popup-btn:hover {
+  background-color: #388e3c; /* Darker green on hover */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
 </style>
 <body>
     <header>
@@ -237,7 +301,13 @@ footer {
             </a>
         </div>
     </header>
-
+      <div id="popup" class="popup">
+    <div class="popup-content">
+      <h2 class="popup-title">💬 Hey there, Student!</h2>
+      <p class="popup-message">It's time to log in and check in on your mental health today! Your well-being matters 😊.</p>
+      <button id="close-popup" class="popup-btn">Got it!</button>
+    </div>
+  </div>
     <main>
         <section class="hero-section">
             <h2>Your AI-Powered Mental Health Companion</h2>
@@ -328,5 +398,27 @@ footer {
             <p>&copy; 2024 MindfulAI Support. All rights reserved.</p>
         </div>
     </footer>
+    <script type="text/javascript">
+    // Function to show the popup
+function showPopup() {
+  const popup = document.getElementById('popup');
+  popup.style.display = 'flex';
+}
+
+// Function to close the popup
+function closePopup() {
+  const popup = document.getElementById('popup');
+  popup.style.display = 'none';
+}
+
+// Show the popup when the page loads
+window.onload = function() {
+  setTimeout(showPopup, 1000); // Popup appears after 1 second
+}
+
+// Close popup when button is clicked
+document.getElementById('close-popup').addEventListener('click', closePopup);
+
+</script>
 </body>
 </html>
