@@ -330,6 +330,24 @@ openai.api_key = os.getenv('OPENAI_API_KEY', 'your-fallback-api-key')
 def landing_page(request):
     return render(request, 'landing.html')
 
+def landing(request):
+    return render(request, 'landing.html')
+
+def about(request):
+    return render(request, 'about.html')
+
+def privacy(request):
+    return render(request, 'privacy.html')
+
+def terms(request):
+    return render(request, 'terms.html')
+
+def contact(request):
+    return render(request, 'contact.html')
+
+def resources(request):
+    return render(request, 'resources.html')  
+
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 

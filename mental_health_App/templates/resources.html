@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Resources - Mental Health Support</title>
+    <style>
+        /* Include the same base styles as above */
+        .search-container {
+            background-color: var(--light-green);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary-green);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .resource-card {
+            background-color: white;
+            border: 1px solid var(--primary-green);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-card h3 {
+            color: var(--primary-green);
+            margin-top: 0;
+        }
+
+        .category-tag {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 16px;
+            display: inline-block;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+        :root {
+            --primary-green: #4CAF50;
+            --secondary-green: #45a049;
+            --light-green: #e8f5e9;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            background-color: var(--secondary-green);
+            padding: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .about-section {
+            background-color: var(--light-green);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        footer {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin: 0 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mental Health Resources</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'landing' %}">Home</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="search-container">
+            <input type="text" class="search-input" id="resourceSearch" placeholder="Search resources...">
+        </div>
+        <div id="resourceList">
+            <div class="resource-card">
+                <span class="category-tag">Articles</span>
+                <h3>Understanding Anxiety</h3>
+                <p>Learn about the different types of anxiety disorders and coping strategies.</p>
+                <a href="#">Read More →</a>
+            </div>
+            <div class="resource-card">
+                <span class="category-tag">Student Support</span>
+                <h3>Academic Stress Management</h3>
+                <p>Tips and techniques for managing academic pressure and maintaining mental well-being.</p>
+                <a href="#">Read More →</a>
+            </div>
+            <div class="resource-card">
+                <span class="category-tag">Crisis Help</span>
+                <h3>24/7 Crisis Support</h3>
+                <p>Immediate support resources and hotlines for crisis situations.</p>
+                <a href="#">Access Now →</a>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                    <li><a href="{% url 'terms' %}">Terms of Service</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="{% url 'resources' %}">Mental Health Articles</a></li>
+                    <li><a href="{% url 'resources' %}">Student Support</a></li>
+                    <li><a href="{% url 'resources' %}">Crisis Help</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <ul>
+                    <li><a href="https://x.com/"><i class="fab fa-x"></i> X</a></li>
+                    <li><a href="https://www.instagram.com/"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="https://www.linkedin.com/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 MindfulAI Support. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('resourceSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const resources = document.getElementsByClassName('resource-card');
+            
+            Array.from(resources).forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if(text.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

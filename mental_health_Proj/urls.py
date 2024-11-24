@@ -24,6 +24,12 @@ from mental_health_App.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', landing_page, name='landing_page'),
+    path('landing', landing, name='landing'),
+    path('about/', about, name='about'),
+    path('privacy/', privacy, name='privacy'),
+    path('terms/', terms, name='terms'),
+    path('contact/', contact, name='contact'),
+    path('resources/', resources, name='resources'),
     path('login/', StudentLoginView.as_view(), name='login'),
     path('logout/', logout_view, name='logout'),
     path('dashboard/', dashboard, name='dashboard'),
