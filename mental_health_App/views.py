@@ -183,33 +183,6 @@ class EmotionResponseView(View):
             return self.create_response(
                 "I'm here to support you. Could you please share more about what you're feeling?"
             )
-    
-    def get_kb_response(self, user_message: str) -> Optional[str]:
-        """Get response using CSV knowledge base matching."""
-        try:
-            # Check if knowledge base is loaded
-            if self.kb_data is None or self.kb_context_vectors is None:
-                logger.warning("Knowledge base not initialized")
-                return None
-
-            # Preprocess the input message
-            processed_input = self.preprocessor.preprocess(user_message)
-            input_vector = self.kb_vectorizer.transform([processed_input])
-            
-            # Calculate cosine similarities
-            similarities = cosine_similarity(input_vector, self.kb_context_vectors).flatten()
-            best_match_idx = np.argmax(similarities)
-            
-            # Only return response if similarity is above threshold
-            if float(similarities[best_match_idx]) >= 0.5:  # Adjust threshold as needed
-                return self.kb_data.iloc[best_match_idx]['Response']
-            
-            logger.warning("No good knowledge base match found")
-            return None
-        
-        except Exception as e:
-            logger.error(f"Error in knowledge base matching: {str(e)}")
-            return None
             
     def get_tfidf_response(self, user_message: str) -> Optional[str]:
         """Get response using TF-IDF matching."""
@@ -352,6 +325,33 @@ class EmotionResponseView(View):
             logger.error(f"Error in local response generation: {str(e)}")
             return "I'm here to listen. Would you like to tell me more?"
 
+    def get_kb_response(self, user_message: str) -> Optional[str]:
+        """Get response using CSV knowledge base matching."""
+        try:
+            # Check if knowledge base is loaded
+            if self.kb_data is None or self.kb_context_vectors is None:
+                logger.warning("Knowledge base not initialized")
+                return None
+
+            # Preprocess the input message
+            processed_input = self.preprocessor.preprocess(user_message)
+            input_vector = self.kb_vectorizer.transform([processed_input])
+            
+            # Calculate cosine similarities
+            similarities = cosine_similarity(input_vector, self.kb_context_vectors).flatten()
+            best_match_idx = np.argmax(similarities)
+            
+            # Only return response if similarity is above threshold
+            if float(similarities[best_match_idx]) >= 0.5:  # Adjust threshold as needed
+                return self.kb_data.iloc[best_match_idx]['Response']
+            
+            logger.warning("No good knowledge base match found")
+            return None
+        
+        except Exception as e:
+            logger.error(f"Error in knowledge base matching: {str(e)}")
+            return None
+
     def create_response(self, response_text: str) -> JsonResponse:
         """Create JSON response with emotion detection."""
         try:
@@ -369,8 +369,6 @@ class EmotionResponseView(View):
                 'response': response_text,
                 'emotion': 'neutral'
             })
-
-
 
 openai.api_key = os.getenv('OPENAI_API_KEY', 'your-fallback-api-key')
 
