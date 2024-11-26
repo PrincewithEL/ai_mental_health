@@ -126,6 +126,7 @@ class EmotionResponseView(View):
         self.response_data = None
         self.vectorizer = None
         self.context_vectors = None
+        self.kb_data = None  # New attribute for CSV knowledge base
         try:
             self.initialize_components()
         except Exception as e:
@@ -137,20 +138,39 @@ class EmotionResponseView(View):
         try:
             self.preprocessor = TextPreprocessor()
             self.response_data, self.vectorizer, self.context_vectors = DataLoader.load_response_data()
+            
+            # Load the CSV knowledge base
+            kb_path = os.path.join(settings.BASE_DIR, 'media', 'Complete_KB_Updated.csv')
+            if os.path.exists(kb_path):
+                self.kb_data = pd.read_csv(kb_path)
+                
+                # Remove rows with NaN values in the 'Tag Pattern' column
+                self.kb_data = self.kb_data.dropna(subset=['Tag'])
+                
+                # Ensure the column is converted to string
+                self.kb_data['Tag'] = self.kb_data['Tag'].astype(str)
+                
+                self.kb_vectorizer = TfidfVectorizer(stop_words='english')
+                self.kb_context_vectors = self.kb_vectorizer.fit_transform(self.kb_data['Tag'])
+            else:
+                logger.warning(f"Knowledge base CSV not found at {kb_path}")
+                self.kb_data = None
+            
             logger.info("Successfully initialized all components")
         except Exception as e:
             logger.error(f"Error initializing components: {str(e)}")
             raise
 
     def get(self, request, *args, **kwargs):
-        """Handle GET requests with fallback chain."""
+        """Handle GET requests with expanded fallback chain."""
         try:
             user_message = request.GET.get('message', '')
             if not user_message:
                 return self.create_response("Could you please share what's on your mind?")
 
-            # Fallback chain
+            # Expanded fallback chain
             response = (
+                self.get_kb_response(user_message) or  # New knowledge base matching
                 self.get_tfidf_response(user_message) or
                 self.get_openai_response(user_message) or
                 self.get_local_response(user_message)
@@ -163,6 +183,33 @@ class EmotionResponseView(View):
             return self.create_response(
                 "I'm here to support you. Could you please share more about what you're feeling?"
             )
+    
+    def get_kb_response(self, user_message: str) -> Optional[str]:
+        """Get response using CSV knowledge base matching."""
+        try:
+            # Check if knowledge base is loaded
+            if self.kb_data is None or self.kb_context_vectors is None:
+                logger.warning("Knowledge base not initialized")
+                return None
+
+            # Preprocess the input message
+            processed_input = self.preprocessor.preprocess(user_message)
+            input_vector = self.kb_vectorizer.transform([processed_input])
+            
+            # Calculate cosine similarities
+            similarities = cosine_similarity(input_vector, self.kb_context_vectors).flatten()
+            best_match_idx = np.argmax(similarities)
+            
+            # Only return response if similarity is above threshold
+            if float(similarities[best_match_idx]) >= 0.5:  # Adjust threshold as needed
+                return self.kb_data.iloc[best_match_idx]['Response']
+            
+            logger.warning("No good knowledge base match found")
+            return None
+        
+        except Exception as e:
+            logger.error(f"Error in knowledge base matching: {str(e)}")
+            return None
             
     def get_tfidf_response(self, user_message: str) -> Optional[str]:
         """Get response using TF-IDF matching."""
